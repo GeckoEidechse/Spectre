@@ -26,7 +26,7 @@ def load_json(file):
     with open(file, 'r') as f:
         data = json.load(f)
     return data
-    
+
 # Functions for saving users toggling their replies to JSON
 def save_users(data):
     save_json(noreplylist, data)

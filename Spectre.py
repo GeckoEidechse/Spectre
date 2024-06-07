@@ -14,7 +14,7 @@ allowed_users = util.JsonHandler.load_allowed_users()
 # Config docs
 # {
 #     "admin": <admin id>,
-#     "cooldowntime": <cooldown seconds>, 
+#     "cooldowntime": <cooldown seconds>,
 #     "noreplylist": <name of list.json>,
 #     "neverreplylist": <name of neverreplylist.json>
 #     "allowedchannels": <name of list.json>

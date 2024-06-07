@@ -17,25 +17,25 @@ class UserReplies(commands.Cog):
         if str(ctx.author.id) in data:
             del data[str(ctx.author.id)]
             await ctx.send("Succesfully enabled me automatically replying to your messages!", ephemeral=True)
-            
-        else:    
+
+        else:
             data[str(ctx.author.id)] = f"{ctx.author.display_name}"
             await ctx.send("Successfully disabled me automatically replying to your messages!", ephemeral=True)
-            
+
         util.JsonHandler.save_users(data)
-    
+
     # Disable a user's automatic replies if they're being naughty :D
     @commands.hybrid_command(description="Disables reply toggling for selected user. Allowed users only.")
     @app_commands.describe(user = "The user to disable reply toggling for")
     async def toggleuserreplies(self, ctx, user: discord.Member):
         data = util.JsonHandler.load_neverusers()
-    
+
         if str(ctx.author.id) in allowed_users:
             if str(user.id) in data:
                 del data[str(user.id)]
 
                 await ctx.send(f"Successfully enabled reply toggling for {user.name}!", ephemeral=True)
-        
+
             else:
                 data[str(user.id)] = "off"
                 # This isn't very efficient but it works (I think)!

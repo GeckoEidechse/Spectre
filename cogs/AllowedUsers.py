@@ -13,7 +13,7 @@ class AllowedUsers(commands.Cog):
     @commands.hybrid_command(description="Removes a user from the allowed users list. Owner only.")
     @app_commands.describe(user = "Toggle `user`'s ability to use specific bot commands")
     async def toggleusercommands(self, ctx, user: typing.Optional[discord.Member], role: typing.Optional[discord.Role]):
-    
+
         if ctx.author.id == self.bot.owner_id:
 
             if user is not None and Role is not None:
@@ -23,11 +23,11 @@ class AllowedUsers(commands.Cog):
                 if str(user.id) in allowed_users:
                     del allowed_users[str(user.id)]
                     await ctx.send(f"Successfully removed {user.name}'s ability to use bot commands!", ephemeral=True)
-                
+
                 else:
                     allowed_users[str(user.id)] = user.display_name
                     await ctx.send(f"Successfully allowed {user.name} to use bot commands!", ephemeral=True)
-                
+
             if role is not None:
                 if str(role.id) in allowed_users:
                     del allowed_users[str(role.id)]
@@ -36,10 +36,10 @@ class AllowedUsers(commands.Cog):
                 else:
                     allowed_users[str(role.id)] = role.name
                     await ctx.send(f"Successfully allowed {role.name} to use bot commands")
-                
+
             else:
                 await ctx.send("Please select either a user or a role to allow!", ephemeral=True)
-                util.JsonHandler.save_allowed_users(allowed_users) 
+                util.JsonHandler.save_allowed_users(allowed_users)
 
         else:
             await ctx.send("You don't have permission to use this command!", ephemeral=True)

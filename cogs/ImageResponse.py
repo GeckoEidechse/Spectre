@@ -32,7 +32,7 @@ scriptComp.add_field(name="", value="Please note that I'm a bot automatically re
 
 class imageStuff(commands.Cog):
     def __init__(self, bot :commands.Bot) -> None:
-        self.bot = bot 
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -42,7 +42,7 @@ class imageStuff(commands.Cog):
 
         if str(message.author.id) in users:
             return
-        
+
         if str(message.channel.id) in channels or str(message.channel.name).startswith("ticket"):
             if message.attachments:
 

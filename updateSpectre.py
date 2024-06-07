@@ -19,25 +19,25 @@ if os.path.isfile("Spectre.py") == True:
                 os.chdir("../")
                 os.rename("Spectre", "SpectreOld")
                 os.mkdir("Spectre")
-        
+
                 # Clone the newest GitHub repo version
                 Repo.clone_from("https://github.com/itscynxx/Spectre", "Spectre")
-        
+
                 # Remove the "new" config file. There might be a better way to do this, but this works
                 os.remove("Spectre/config.json")
-        
+
                 # Move the old data files from the temporary folder into the new Spectre folder
                 shutil.move("SpectreOld/data", "Spectre/data")
                 shutil.move("SpectreOld/.env", "Spectre")
                 shutil.move("SpectreOld/config.json", "Spectre")
-        
+
                 # Print that the system hasn't imploded yet
                 print("Moved Spectre's data files succesfully!")
                 print("Deleting old Spectre files...")
-        
+
                 # Remove temporary folders
                 shutil.rmtree("SpectreOld")
-                
+
             elif warning.lower() == "n":
                 print("Stopping update...")
 
@@ -54,10 +54,10 @@ if os.path.isfile("Spectre.py") == True:
                     print("Branch url found! Automatically cloning the branch url...")
                     # Split on tree, so we get the base url
                     gitUrl = whatRepo.split("/tree")[0]
-                    # Split after tree, so we get the branch 
-                    gitBranch = whatRepo.split("tree/")[1]  
+                    # Split after tree, so we get the branch
+                    gitBranch = whatRepo.split("tree/")[1]
 
-                # If tree isn't in the name, manually input branch name           
+                # If tree isn't in the name, manually input branch name
                 else:
                     # We already have the url in this case
                     gitUrl = whatRepo
@@ -76,7 +76,7 @@ if os.path.isfile("Spectre.py") == True:
                 shutil.move("Spectre/data", f"Spectre-Branch_{gitBranch}/data")
                 shutil.move("Spectre/.env", f"Spectre-Branch_{gitBranch}")
                 shutil.move("Spectre/config.json", f"Spectre-Branch_{gitBranch}")
-                
+
             else:
                 print("Clone a valid Spectre repo :P")
 

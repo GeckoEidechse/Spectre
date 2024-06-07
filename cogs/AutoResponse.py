@@ -37,7 +37,7 @@ fastifyError = discord.Embed(title='I noticed you may have mentioned the "NO GAM
 ea = discord.Embed(title="I noticed you may have asked for help regarding the \"Couldn't write log file!\" error.", description="If you have the game installed on EA, please follow the [wiki section](https://r2northstar.gitbook.io/r2northstar-wiki/installing-northstar/troubleshooting#cannot-write-log-file-when-using-northstar-on-ea-app) for solving this issue.", color=0x5D3FD3)
 
 config = util.JsonHandler.load_json("config.json")
-        
+
 class AutoResponse(commands.Cog):
     def __init__(self, bot :commands.Bot) -> None:
         self.bot = bot
@@ -52,7 +52,7 @@ class AutoResponse(commands.Cog):
         time_diff = (datetime.datetime.utcnow() - self.last_time).total_seconds()
 
         if not (time_diff > config["cooldowntime"] or message.channel.id != self.last_channel):
-            self.last_channel = message.channel.id            
+            self.last_channel = message.channel.id
             print(f"Tried to send message while on cooldown! Didn't send message!")
             return
         else:
@@ -62,12 +62,12 @@ class AutoResponse(commands.Cog):
 
                 if str(message.author.id) in neverusers:
                         return
-                
+
                 if str(message.channel.id) in enabledchannels or str(message.channel.name).startswith("ticket"):
                         # Should stop all bot messages
                         if message.author.bot:
                             return
-                            
+
                         elif re.search("player.*account", message.content.lower()):
                             await message.channel.send(reference=message, embed=playeraccount)
                             print(f"Couldn\'t find player account embed reply sent")
@@ -75,17 +75,17 @@ class AutoResponse(commands.Cog):
                         elif re.search("failed.creating log file", message.content.lower()):
                             await message.channel.send(reference=message, embed=ea)
                             print("Default EA App directory embed reply sent")
-                        
+
                         elif re.search("controller.not.working", message.content.lower()) or re.search("can.i.use.controller.*northstar", message.content.lower()):
                             await message.channel.send(reference=message, embed=controller)
                             print("Controller embed reply sent")
-                            
+
                         elif re.search("authentication.*failed", message.content.lower()) or re.search("cant.*join", message.content.lower()):
                             if util.MasterStatus.IsMasterDown() == True:
                                 await message.channel.send(reference=message, embed=msdownembed)
                             else:
                                 return
-                                    
+
                         elif re.search("how|help", message.content.lower()) and re.search("uninstall.northstar", message.content.lower()):
                             await message.channel.send(reference=message, embed=uninstalling)
                             print(f"Installing Northstar embed reply sent")
@@ -93,7 +93,7 @@ class AutoResponse(commands.Cog):
                         elif re.search("how|help", message.content.lower()) and re.search("install.northstar", message.content.lower()):
                             await message.channel.send(reference=message, embed=installing)
                             print(f"Uninstalling Northstar embed reply sent")
-                    
+
                         elif re.search("help|how", message.content.lower()) and re.search("titanfall|northstar", message.content.lower()) and re.search("install.*mods", message.content.lower()):
                             await message.channel.send(reference=message, embed=installmods)
                             await message.channel.send("https://cdn.discordapp.com/attachments/942391932137668618/1069362595192127578/instruction_bruh.png")
@@ -114,7 +114,7 @@ class AutoResponse(commands.Cog):
 
                                 await message.add_reaction("🟢")
                                 await asyncio.sleep(1)
-                            
+
                 self.last_time = datetime.datetime.utcnow()
             self.last_channel = message.channel.id
 

@@ -5,12 +5,12 @@ from discord import app_commands
 from typing import Optional
 
 class PaginationView(discord.ui.View):
-    
+
     current_page : int = 0
-    
+
     async def send(self, ctx):
         self.message = await ctx.send(embed=self.create_embed(self.data, self.data_key), view=self)
-        
+
     def create_embed(self, data, data_key):
         key = self.data_key[self.current_page]
         mod = self.data[key]
@@ -25,20 +25,20 @@ class PaginationView(discord.ui.View):
         embed.set_footer(text=embed_footer)
         self.mod_url = mod['ts_url']
         return embed
-    
+
     async def update_message(self, data, data_key):
         await self.message.edit(embed=self.create_embed(data, data_key), view=self)
-    
+
     @discord.ui.button(label="View Mod", style=discord.ButtonStyle.success)
     async def link_button(self, interaction:discord.Interaction, button: discord.ui.Button):
         await interaction.response.send_message(self.mod_url, ephemeral=True)
-    
+
     @discord.ui.button(label="Prev", style=discord.ButtonStyle.primary)
     async def prev_button(self, interaction:discord.Interaction, button: discord.ui.Button):
         await interaction.response.defer()
         self.current_page = (self.current_page - 1) % len(self.data_key)
         await self.update_message(self.data, self.data_key)
-    
+
     @discord.ui.button(label="Next", style=discord.ButtonStyle.primary)
     async def next_button(self, interaction:discord.Interaction, button: discord.ui.Button):
         await interaction.response.defer()
@@ -47,30 +47,30 @@ class PaginationView(discord.ui.View):
 
 class ModSearch(commands.Cog):
     def __init__(self, bot :commands.Bot) -> None:
-        self.bot = bot 
-        
+        self.bot = bot
+
     @commands.hybrid_command(description="Search Northstar Thunderstore for mods")
     @app_commands.choices(method=[
         app_commands.Choice(name="Mod name", value="name"),
         app_commands.Choice(name="Mod author", value="owner")
         ])
     async def modsearch(self, ctx, search_string: str, method: Optional[app_commands.Choice[str]]):
-        
+
         if len(search_string) < 3:
             character_warning = await ctx.send("Search must be at least 3 characters", ephemeral=True)
             await asyncio.sleep(5)
             await character_warning.delete()
             return
-        
+
         try:
             response = requests.get("https://northstar.thunderstore.io/api/v1/package/")
             if response.status_code == 200:
                 data = response.json()
-    
+
         except requests.exceptions.RequestException as err:
             print(err)
             return
-        
+
         mods = {}
         for i, item in enumerate(data):
             if method == "owner":
@@ -92,18 +92,18 @@ class ModSearch(commands.Cog):
                     "total_dl": downloads,
                     "description": item['versions'][0]['description']
                 }
-                
+
         if not mods:
             no_mods_warning = await ctx.send("No mods found")
             await asyncio.sleep(5)
             await no_mods_warning.delete()
             return
-        
-        # Sort mods by most downloaded by default until we get better sorting later        
+
+        # Sort mods by most downloaded by default until we get better sorting later
         sorted_mods_by_dl = dict(sorted(mods.items(), key=lambda item: item[1]['total_dl'], reverse=True))
-        
+
         pages = list(sorted_mods_by_dl.keys())
-        
+
         pagination_view = PaginationView()
         pagination_view.data_key = pages
         pagination_view.data = sorted_mods_by_dl

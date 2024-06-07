@@ -5,7 +5,7 @@ import util.MasterStatus
 class MasterCheck(commands.Cog):
     def __init__(self, bot :commands.Bot) -> None:
         self.bot = bot
-        
+
     @commands.hybrid_command(description="Check Northstar master server status")
     async def ms_status(self, ctx):
         if util.MasterStatus.IsMasterDown() is True:

@@ -19,7 +19,7 @@ def replycheck():
 class GlobalReplies(commands.Cog):
     def __init__(self, bot :commands.Bot) -> None:
         self.bot = bot
-    
+
     # Enables replies across all servers
     @commands.hybrid_command(description="Globally enables Spectre replying to messages. Allowed users only.")
     async def toggleglobalreplies(self, ctx):
@@ -27,12 +27,12 @@ class GlobalReplies(commands.Cog):
 
         if str(ctx.author.id) in allowed_users:
             global replies
-            
+
             if replies == False:
                 replies = True
                 await ctx.send(embed=replieson)
                 print(f"Automatic bot replies are enabled")
-                
+
             elif replies == True:
                 replies = False
                 await ctx.send(embed=repliesoff)
@@ -56,7 +56,7 @@ class GlobalReplies(commands.Cog):
                 replystatusenabled.add_field(name="Automatic replies in this channel:", value="Enabled")
             await ctx.send(embed=replystatusenabled, ephemeral=True)
             replystatusenabled.clear_fields()
-            
+
         elif replies == False:
             if str(ctx.author.id) in neverusers:
                 replystatusdisabled.add_field(name=f"{ctx.author.display_name}'s ability to control replies:", value="Disabled", inline=False)
